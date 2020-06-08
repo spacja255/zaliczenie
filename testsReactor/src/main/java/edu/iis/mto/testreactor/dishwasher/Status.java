@@ -1,4 +1,4 @@
-package edu.iis.mto.testreactor.exc4;
+package edu.iis.mto.testreactor.dishwasher;
 
 public enum Status {
     SUCCESS,

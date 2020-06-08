@@ -1,4 +1,4 @@
-package edu.iis.mto.testreactor.exc4;
+package edu.iis.mto.testreactor.dishwasher.pump;
 
 public class PumpException extends Exception {
 

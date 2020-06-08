@@ -1,4 +1,4 @@
-package edu.iis.mto.testreactor.exc4;
+package edu.iis.mto.testreactor.dishwasher.engine;
 
 public class EngineException extends Exception {
 

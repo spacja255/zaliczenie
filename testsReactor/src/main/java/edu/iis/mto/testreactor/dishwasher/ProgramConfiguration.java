@@ -1,13 +1,17 @@
-package edu.iis.mto.testreactor.exc4;
+package edu.iis.mto.testreactor.dishwasher;
+
+import static java.util.Objects.requireNonNull;
 
 public class ProgramConfiguration {
 
     private final WashingProgram program;
     private final boolean tabletsUsed;
+    private final FillLevel fillLevel;
 
     private ProgramConfiguration(Builder builder) {
-        this.program = builder.program;
+        this.program = requireNonNull(builder.program, "program");
         this.tabletsUsed = builder.tabletsUsed;
+        this.fillLevel = requireNonNull(builder.fillLevel, "fillLevel");
     }
 
     public WashingProgram getProgram() {
@@ -18,6 +22,10 @@ public class ProgramConfiguration {
         return tabletsUsed;
     }
 
+    public FillLevel getFillLevel() {
+        return fillLevel;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -25,7 +33,8 @@ public class ProgramConfiguration {
     public static final class Builder {
 
         private WashingProgram program;
-        private boolean tabletsUsed;
+        private boolean tabletsUsed = false;
+        private FillLevel fillLevel;
 
         private Builder() {}
 
@@ -36,6 +45,11 @@ public class ProgramConfiguration {
 
         public Builder withTabletsUsed(boolean tabletsUsed) {
             this.tabletsUsed = tabletsUsed;
+            return this;
+        }
+
+        public Builder withFillLevel(FillLevel fillLevel) {
+            this.fillLevel = fillLevel;
             return this;
         }
 

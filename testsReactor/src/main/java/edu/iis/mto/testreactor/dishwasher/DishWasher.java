@@ -1,8 +1,13 @@
-package edu.iis.mto.testreactor.exc4;
+package edu.iis.mto.testreactor.dishwasher;
 
-import static edu.iis.mto.testreactor.exc4.Status.DOOR_OPEN;
-import static edu.iis.mto.testreactor.exc4.Status.SUCCESS;
+import static edu.iis.mto.testreactor.dishwasher.Status.DOOR_OPEN;
+import static edu.iis.mto.testreactor.dishwasher.Status.SUCCESS;
 import static java.util.Objects.requireNonNull;
+
+import edu.iis.mto.testreactor.dishwasher.engine.Engine;
+import edu.iis.mto.testreactor.dishwasher.engine.EngineException;
+import edu.iis.mto.testreactor.dishwasher.pump.PumpException;
+import edu.iis.mto.testreactor.dishwasher.pump.WaterPump;
 
 public class DishWasher {
 
@@ -25,7 +30,7 @@ public class DishWasher {
             return error(DOOR_OPEN);
         }
         if (filterIsClean(program)) {
-            return run(program.getProgram());
+            return run(program.getProgram(), program.getFillLevel());
         }
         return error(Status.ERROR_FILTER);
     }
@@ -37,12 +42,12 @@ public class DishWasher {
         return true;
     }
 
-    private RunResult run(WashingProgram program) {
+    private RunResult run(WashingProgram program, FillLevel fillLevel) {
         try {
             if (!program.equals(WashingProgram.RINSE)) {
-                runProgram(program);
+                runProgram(program, fillLevel);
             }
-            runProgram(WashingProgram.RINSE);
+            runProgram(WashingProgram.RINSE, fillLevel);
         } catch (EngineException e) {
             return error(Status.ERROR_PROGRAM);
         } catch (PumpException e) {
@@ -52,8 +57,8 @@ public class DishWasher {
         return success(program);
     }
 
-    private void runProgram(WashingProgram program) throws EngineException, PumpException {
-        waterPump.pour(program);
+    private void runProgram(WashingProgram program, FillLevel fillLevel) throws EngineException, PumpException {
+        waterPump.pour(fillLevel);
         engine.runProgram(program);
         waterPump.drain();
     }
