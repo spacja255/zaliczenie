@@ -21,7 +21,7 @@ public class DishWasher {
 
     public RunResult start(ProgramConfiguration program) {
         requireNonNull(program, "program == null");
-        if (door.closed()) {
+        if (!door.closed()) {
             return error(DOOR_OPEN);
         }
         if (filterIsClean(program)) {
@@ -31,14 +31,13 @@ public class DishWasher {
     }
 
     private boolean filterIsClean(ProgramConfiguration program) {
-        if (program.isTabletsUsed()) {
+        if (program.isWashingTabletsUsed()) {
             return dirtFilter.capacity() > MINIMAL_FILTER_CAPACITY;
         }
         return true;
     }
 
     private RunResult run(WashingProgram program) {
-
         try {
             if (!program.equals(WashingProgram.RINSE)) {
                 runProgram(program);

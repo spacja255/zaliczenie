@@ -14,7 +14,7 @@ public class ProgramConfiguration {
         return program;
     }
 
-    public boolean isTabletsUsed() {
+    public boolean isWashingTabletsUsed() {
         return tabletsUsed;
     }
 
