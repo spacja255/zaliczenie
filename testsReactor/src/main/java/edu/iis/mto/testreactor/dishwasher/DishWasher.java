@@ -11,7 +11,7 @@ import edu.iis.mto.testreactor.dishwasher.pump.WaterPump;
 
 public class DishWasher {
 
-    private static final double MINIMAL_FILTER_CAPACITY = 50.0d;
+    public static final double MAXIMAL_FILTER_CAPACITY = 50.0d;
     private final WaterPump waterPump;
     private final Engine engine;
     private final DirtFilter dirtFilter;
@@ -37,7 +37,7 @@ public class DishWasher {
 
     private boolean filterIsClean(ProgramConfiguration program) {
         if (program.isWashingTabletsUsed()) {
-            return dirtFilter.capacity() > MINIMAL_FILTER_CAPACITY;
+            return dirtFilter.capacity() > MAXIMAL_FILTER_CAPACITY;
         }
         return true;
     }
@@ -52,6 +52,9 @@ public class DishWasher {
             return error(Status.ERROR_PROGRAM);
         } catch (PumpException e) {
             return error(Status.ERROR_PUMP);
+        }
+        finally {
+            door.unlock();
         }
 
         return success(program);
