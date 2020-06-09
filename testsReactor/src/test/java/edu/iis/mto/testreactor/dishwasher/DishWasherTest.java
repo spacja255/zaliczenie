@@ -11,6 +11,7 @@ import org.mockito.InOrder;
 import static org.mockito.Mockito.*;
 
 import edu.iis.mto.testreactor.dishwasher.engine.Engine;
+import edu.iis.mto.testreactor.dishwasher.engine.EngineException;
 import edu.iis.mto.testreactor.dishwasher.pump.WaterPump;
 
 public class DishWasherTest {
@@ -103,6 +104,20 @@ public class DishWasherTest {
         RunResult result = dishWasher.start(ProgramConfiguration.builder().withFillLevel(FillLevel.HALF).withProgram(WashingProgram.RINSE).withTabletsUsed(false).build());
         
         RunResult expected = RunResult.builder().withRunMinutes(WashingProgram.RINSE.getTimeInMinutes()).withStatus(Status.SUCCESS).build();
+        
+        assertEquals(expected.getRunMinutes(), result.getRunMinutes());
+        assertEquals(expected.getStatus(), result.getStatus());
+    }
+    
+    @Test
+    public void shouldProgramFail() throws EngineException {
+    	when(door.closed()).thenReturn(true);
+    	when(dirtFilter.capacity()).thenReturn(0.0);
+    	doThrow(EngineException.class).when(engine).runProgram(any());
+    	
+        RunResult result = dishWasher.start(ProgramConfiguration.builder().withFillLevel(FillLevel.HALF).withProgram(WashingProgram.RINSE).withTabletsUsed(false).build());
+        
+        RunResult expected = RunResult.builder().withRunMinutes(0).withStatus(Status.ERROR_PROGRAM).build();
         
         assertEquals(expected.getRunMinutes(), result.getRunMinutes());
         assertEquals(expected.getStatus(), result.getStatus());
