@@ -1,15 +1,15 @@
 package edu.iis.mto.testreactor.dishwasher;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.Test;
-
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 
 public class DishWasherTest {
 
     @Test
-    public void test() {
-        fail("Not yet implemented");
+    public void itCompiles() {
+        assertThat(true, Matchers.equalTo(true));
     }
 
 }
