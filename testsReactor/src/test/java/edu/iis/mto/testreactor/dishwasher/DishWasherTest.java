@@ -68,4 +68,17 @@ public class DishWasherTest {
         assertEquals(expected.getRunMinutes(), result.getRunMinutes());
         assertEquals(expected.getStatus(), result.getStatus());
     }
+    
+    @Test
+    public void shouldNotStartWithDirtyFilter() {
+    	when(door.closed()).thenReturn(true);
+    	when(dirtFilter.capacity()).thenReturn(0.0);
+    	
+        RunResult result = dishWasher.start(ProgramConfiguration.builder().withFillLevel(FillLevel.HALF).withProgram(WashingProgram.ECO).withTabletsUsed(true).build());
+        
+        RunResult expected = RunResult.builder().withRunMinutes(0).withStatus(Status.ERROR_FILTER).build();
+        
+        assertEquals(expected.getRunMinutes(), result.getRunMinutes());
+        assertEquals(expected.getStatus(), result.getStatus());
+    }
 }
