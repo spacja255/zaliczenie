@@ -55,4 +55,17 @@ public class DishWasherTest {
         inOrder.verify(door).closed();
         inOrder.verify(dirtFilter).capacity();
     }
+    
+    @Test
+    public void shouldNotStartWithOpenDoor() {
+    	when(door.closed()).thenReturn(false);
+    	when(dirtFilter.capacity()).thenReturn(55.0);
+    	
+        RunResult result = dishWasher.start(ProgramConfiguration.builder().withFillLevel(FillLevel.HALF).withProgram(WashingProgram.ECO).withTabletsUsed(true).build());
+        
+        RunResult expected = RunResult.builder().withRunMinutes(0).withStatus(Status.DOOR_OPEN).build();
+        
+        assertEquals(expected.getRunMinutes(), result.getRunMinutes());
+        assertEquals(expected.getStatus(), result.getStatus());
+    }
 }
