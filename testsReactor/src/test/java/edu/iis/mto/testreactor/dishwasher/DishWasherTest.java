@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 
 import static org.mockito.Mockito.*;
 
@@ -31,15 +32,27 @@ public class DishWasherTest {
     }
     
     @Test
-    public void test() {
+    public void shouldMakeSuccessWashing() {
     	when(door.closed()).thenReturn(true);
-    	when(dirtFilter.capacity()).thenReturn(0.0);
+    	when(dirtFilter.capacity()).thenReturn(55.0);
     	
-        RunResult result = dishWasher.start(ProgramConfiguration.builder().withFillLevel(FillLevel.HALF).withProgram(WashingProgram.ECO).withTabletsUsed(false).build());
+        RunResult result = dishWasher.start(ProgramConfiguration.builder().withFillLevel(FillLevel.HALF).withProgram(WashingProgram.ECO).withTabletsUsed(true).build());
         
         RunResult expected = RunResult.builder().withRunMinutes(WashingProgram.ECO.getTimeInMinutes()).withStatus(Status.SUCCESS).build();
         
         assertEquals(expected.getRunMinutes(), result.getRunMinutes());
         assertEquals(expected.getStatus(), result.getStatus());
+    }
+    
+    @Test
+    public void shouldCallMethodsInOrder() {
+    	when(door.closed()).thenReturn(true);
+    	when(dirtFilter.capacity()).thenReturn(55.0);
+    	
+        dishWasher.start(ProgramConfiguration.builder().withFillLevel(FillLevel.HALF).withProgram(WashingProgram.ECO).withTabletsUsed(true).build());
+        
+        InOrder inOrder = inOrder(door, dirtFilter);
+        inOrder.verify(door).closed();
+        inOrder.verify(dirtFilter).capacity();
     }
 }
