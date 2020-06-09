@@ -2,7 +2,6 @@ package edu.iis.mto.testreactor.dishwasher;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
