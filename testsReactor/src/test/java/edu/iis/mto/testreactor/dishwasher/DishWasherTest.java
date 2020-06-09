@@ -94,4 +94,17 @@ public class DishWasherTest {
         assertEquals(expected.getRunMinutes(), result.getRunMinutes());
         assertEquals(expected.getStatus(), result.getStatus());
     }
+    
+    @Test
+    public void shouldRinseWater() {
+    	when(door.closed()).thenReturn(true);
+    	when(dirtFilter.capacity()).thenReturn(0.0);
+    	
+        RunResult result = dishWasher.start(ProgramConfiguration.builder().withFillLevel(FillLevel.HALF).withProgram(WashingProgram.RINSE).withTabletsUsed(false).build());
+        
+        RunResult expected = RunResult.builder().withRunMinutes(WashingProgram.RINSE.getTimeInMinutes()).withStatus(Status.SUCCESS).build();
+        
+        assertEquals(expected.getRunMinutes(), result.getRunMinutes());
+        assertEquals(expected.getStatus(), result.getStatus());
+    }
 }
