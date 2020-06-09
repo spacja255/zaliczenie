@@ -4,4 +4,6 @@ public interface Door {
 
     boolean closed();
 
+    void lock();
+
 }

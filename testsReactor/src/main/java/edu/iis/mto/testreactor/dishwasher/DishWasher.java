@@ -44,6 +44,7 @@ public class DishWasher {
 
     private RunResult run(WashingProgram program, FillLevel fillLevel) {
         try {
+            door.lock();
             if (!program.equals(WashingProgram.RINSE)) {
                 runProgram(program, fillLevel);
             }
@@ -52,9 +53,6 @@ public class DishWasher {
             return error(Status.ERROR_PROGRAM);
         } catch (PumpException e) {
             return error(Status.ERROR_PUMP);
-        }
-        finally {
-            door.unlock();
         }
 
         return success(program);
